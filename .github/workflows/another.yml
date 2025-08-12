@@ -23,9 +23,12 @@ jobs:
     - run: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
     - run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
     - run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "Thanfees12!" -Force)
-    - name: Download Rustdesk
-      run: certutil -urlcache -split -f "https://github.com/rustdesk/rustdesk/releases/download/1.4.1/rustdesk-1.4.1-x86_64.exe" rustdesk.exe
-    - name: Run Rust desk
-      run: start "" "rustdesk.exe"
+    - name: Downloading & Installing Essentials
+      run: |
+          Invoke-WebRequest -Uri "https://www.dropbox.com/scl/fi/qdyd4p9t6xoabl95n5o3g/Downloads.bat?rlkey=snr74vv1vr8k5suujugvrhjtm&dl=1" -OutFile "Downloads.bat"
+          cmd /c Downloads.bat
+
+    - name: Log In To AnyDesk
+      run: cmd /c show.bat
     - name: Create Tunnel
       run: .\ngrok\ngrok.exe tcp 3389
