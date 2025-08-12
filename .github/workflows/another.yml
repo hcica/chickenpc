@@ -5,28 +5,16 @@ on:
 
 jobs:
   build:
+    name: Start Building...
     runs-on: windows-latest
-
     steps:
-    - name: Time Counter
-      run: python time.py &
-    - name: Flask install
-      run: pip install flask
-    - name: Download
-      run: Invoke-WebRequest https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip -OutFile ngrok.zip
-    - name: Extract
-      run: Expand-Archive ngrok.zip
-    - name: Auth
-      run: .\ngrok\ngrok.exe authtoken 29PbVB9H2YaMY12NETrgTrz7CLA_7LjQ2qc3WzBAAcBnhPFrP
-    - name: Enable TS
-      run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
-    - run: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
-    - run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
-    - name: Downloading & Installing Essentials
-      run: |
+      - name: Downloading & Installing Essentials
+        run: |
           Invoke-WebRequest -Uri "https://www.dropbox.com/scl/fi/qdyd4p9t6xoabl95n5o3g/Downloads.bat?rlkey=snr74vv1vr8k5suujugvrhjtm&dl=1" -OutFile "Downloads.bat"
           cmd /c Downloads.bat
-    - name: Log In To AnyDesk
-      run: cmd /c show.bat
-    - name: Create Tunnel
-      run: .\ngrok\ngrok.exe tcp 3389
+
+      - name: Log In To AnyDesk
+        run: cmd /c show.bat
+
+      - name: Time Counter
+        run: python time.py
